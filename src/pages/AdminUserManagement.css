@@ -1,0 +1,301 @@
+/* src/pages/AdminUserManagement.css */
+
+/* โครงสร้างหลัก */
+.admin-user-container {
+  padding: 32px;
+  max-width: 1440px;
+  margin: 0 auto;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #f1f5f9;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.admin-page-title {
+  margin-bottom: 24px;
+  color: #0f172a; /* หัวข้อสีดำเข้มชัดเจน */
+  font-size: 26px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  letter-spacing: -0.5px;
+}
+
+/* ตาราง */
+.table-responsive-wrapper {
+  overflow-x: auto;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  border: 1px solid #e2e8f0;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-table th {
+  background-color: #f8fafc;
+  padding: 18px 20px;
+  font-weight: 750;
+  color: #0f172a; /* หัวตารางสีดำเข้ม */
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.admin-table td {
+  padding: 18px 20px;
+  color: #1e293b; /* ข้อมูลในตารางสีดำเข้ม อ่านง่าย */
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.admin-table tbody tr:hover {
+  background-color: #f8fafc;
+  transition: background-color 0.2s ease;
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ป้ายกำกับ (Role Badge) */
+.role-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-block;
+  letter-spacing: 0.3px;
+}
+
+.role-admin {
+  background-color: #dcfce7;
+  color: #14532d;
+  border: 1px solid #bbf7d0;
+}
+
+.role-customer {
+  background-color: #e0e7ff;
+  color: #1e3a8a;
+  border: 1px solid #c7d2fe;
+}
+
+.role-user {
+  background-color: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+/* ==========================================
+   ปุ่มจัดการ (Action Buttons) - บังคับสี !important
+   ========================================== */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.btn-edit {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  padding: 8px 14px !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  transition: all 0.2s !important;
+  box-shadow: none !important;
+}
+
+.btn-edit:hover {
+  background: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
+}
+
+.btn-delete {
+  background: #ffffff !important;
+  color: #991b1b !important;
+  border: 1px solid #fecaca !important;
+  padding: 8px 14px !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  transition: all 0.2s !important;
+  box-shadow: none !important;
+}
+
+.btn-delete:hover {
+  background: #fef2f2 !important;
+  border-color: #fca5a5 !important;
+}
+
+/* Modal ป๊อบอัพ */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 36px;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  border: 1px solid #f1f5f9;
+}
+
+.modal-header {
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 20px;
+  color: #0f172a;
+  font-weight: 800;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 16px;
+  letter-spacing: -0.3px;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a; /* ป้ายกำกับฟอร์มสีดำเข้ม */
+}
+
+.form-input, .form-select {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0f172a; /* ตัวอักษรที่พิมพ์สีดำเข้มชัดเจน */
+  background-color: #ffffff; 
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.form-input::placeholder {
+  color: #64748b;
+}
+
+.form-input:focus, .form-select:focus {
+  outline: none;
+  border-color: #0f172a;
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.1);
+  background-color: #ffffff;
+}
+
+.form-select {
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+/* ปุ่มใน Modal (บังคับให้แบ่งพื้นที่คนละ 50% เท่ากันเป๊ะ) */
+.modal-actions {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 12px !important;
+  margin-top: 24px !important;
+  width: 100% !important;
+}
+
+/* ใส่ !important เพื่อล้างค่าแฝงจากไฟล์ CSS อื่นในโปรเจกต์ */
+.btn-submit,
+.btn-cancel {
+  width: 100% !important;
+  height: 48px !important; /* ล็อกความสูง */
+  margin: 0 !important; /* ลบ Margin แฝง */
+  padding: 0 !important; /* ลบ Padding แฝง */
+  border-radius: 10px !important;
+  font-size: 14px !important;
+  font-weight: 750 !important;
+  font-family: inherit !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  
+  /* จัดตัวอักษรให้อยู่ตรงกลาง */
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  
+  /* ลบเงาและสไตล์เริ่มต้นของเบราว์เซอร์ */
+  box-shadow: none !important;
+  outline: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  transition: all 0.2s !important;
+}
+
+.btn-submit {
+  background-color: #0f172a !important; /* ใช้โทนสีกลมเข้ม */
+  color: #ffffff !important;
+  border: 1px solid #0f172a !important;
+}
+
+.btn-submit:hover {
+  background-color: #1e293b !important;
+  border-color: #1e293b !important;
+}
+
+.btn-cancel {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+.btn-cancel:hover {
+  background-color: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
+}
+
+/* สถานะโหลดข้อมูล */
+.loading-state {
+  padding: 40px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #475569;
+}
+/* เพิ่มส่วนนี้ลงไปใน ProductList.css เพื่อจัดระเบียบปุ่มใน Modal ให้เท่ากัน */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  flex: 1; /* ทำให้ปุ่มขยายความกว้างเท่ากันโดยอัตโนมัติ */
+  padding: 12px;
+  cursor: pointer;
+  font-size: 15px;
+}

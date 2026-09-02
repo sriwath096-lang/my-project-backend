@@ -1,0 +1,163 @@
+/* ProductList.css - โทนสว่างสะอาดตา */
+
+.product-list-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.product-header-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.product-search-input {
+  padding: 10px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  width: 300px;
+  background: #f8fafc;
+}
+
+.product-main-layout {
+  display: flex;
+  gap: 30px;
+}
+
+/* Sidebar หมวดหมู่ */
+.category-sidebar {
+  width: 200px;
+  flex-shrink: 0;
+}
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.category-item {
+  padding: 10px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 6px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.category-item.active {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+/* Grid สินค้า */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.product-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 16px;
+  border-radius: 12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+.product-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.product-name {
+  font-size: 16px;
+  margin: 10px 0;
+  color: #1e293b;
+}
+
+.product-price {
+  font-weight: bold;
+  color: #0f172a;
+  margin-top: 8px;
+}
+
+/* Modal โทนสว่าง */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  width: 400px;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+  border: 1px solid #f1f5f9;
+}
+
+.modal-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.product-btn-cart {
+  background: #7c3aed;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.modal-btn-close {
+  background: #f1f5f9;
+  color: #475569;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.product-btn-disabled {
+  background: #e2e8f0;
+  color: #94a3b8;
+  border: none;
+  border-radius: 8px;
+  cursor: not-allowed;
+}
+
+/* เพิ่มส่วนนี้ลงไปใน ProductList.css เพื่อจัดระเบียบปุ่มใน Modal ให้เท่ากัน */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  flex: 1; /* ทำให้ปุ่มขยายความกว้างเท่ากันโดยอัตโนมัติ */
+  padding: 12px;
+  cursor: pointer;
+  font-size: 15px;
+}

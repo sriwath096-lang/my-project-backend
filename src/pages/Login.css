@@ -1,0 +1,159 @@
+/* Login.css - โค้ดแบบแยกเฉพาะหน้า ป้องกันการทับซ้อนกับหน้าอื่น 100% */
+
+.login-page-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-height: calc(100vh - 80px) !important;
+  padding: 24px !important;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+  box-sizing: border-box !important;
+}
+
+.login-custom-card {
+  background: #ffffff !important;
+  padding: 40px 36px !important;
+  border-radius: 24px !important;
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08) !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important;
+  width: 100% !important;
+  max-width: 420px !important;
+  box-sizing: border-box !important;
+}
+
+.login-custom-header {
+  text-align: center !important;
+  margin-bottom: 32px !important;
+}
+
+.login-custom-header h2 {
+  font-size: 28px !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  margin-bottom: 8px !important;
+}
+
+.login-custom-header p {
+  color: #64748b !important;
+  font-size: 14px !important;
+}
+
+.login-custom-form {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important;
+  width: 100% !important;
+}
+
+.login-custom-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+.login-custom-group label {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #475569 !important;
+}
+
+.login-custom-field {
+  width: 100% !important;
+  padding: 14px 16px !important;
+  border: 1.5px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  font-size: 15px !important;
+  background: #f8fafc !important;
+  color: #0f172a !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+.login-custom-field:focus {
+  border-color: #2563eb !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1) !important;
+}
+
+.login-custom-field.has-error {
+  border-color: #ef4444 !important;
+  background: #fef2f2 !important;
+}
+
+.login-custom-password-wrapper {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+.login-custom-password-field {
+  padding-right: 48px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.login-custom-toggle-btn {
+  position: absolute !important;
+  right: 14px !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  color: #64748b !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.error-text {
+  font-size: 12px !important;
+  color: #ef4444 !important;
+  font-weight: 500 !important;
+}
+
+/* ปุ่มเข้าสู่ระบบแบบเต็มกรอบ ไม่โดนทับแน่นอน */
+.login-custom-btn-submit {
+  width: 100% !important;
+  display: block !important;
+  padding: 15px 20px !important;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2) !important;
+  margin-top: 6px !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+}
+
+.login-custom-btn-submit:hover {
+  background: linear-gradient(135deg, #1e293b 0%, #334155) !important;
+}
+
+.login-custom-btn-submit:disabled {
+  background: #cbd5e1 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+}
+
+.login-custom-footer {
+  text-align: center !important;
+  margin-top: 28px !important;
+  font-size: 14px !important;
+  color: #64748b !important;
+}
+
+.login-custom-footer a {
+  color: #2563eb !important;
+  text-decoration: none !important;
+  font-weight: 600 !important;
+}
+
+.login-custom-footer a:hover {
+  text-decoration: underline !important;
+}
+

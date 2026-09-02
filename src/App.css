@@ -1,0 +1,104 @@
+/* =========================================
+   Dropdown Enhancements (ลูกเล่นดร็อปดาวน์)
+   ========================================= */
+
+/* ปุ่มเปิด Dropdown */
+.admin-dropdown-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+
+.admin-dropdown-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* เอฟเฟกต์หมุนลูกศรเมื่อเปิด Dropdown */
+.admin-dropdown-btn .arrow {
+  display: inline-block;
+  font-size: 11px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.admin-dropdown-btn.open .arrow {
+  transform: rotate(180deg);
+}
+
+/* กล่องเมนู Dropdown (Glassmorphism & Animation) */
+.admin-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 190px;
+  background: rgba(28, 28, 30, 0.85); /* พื้นหลังโปร่งแสง */
+  backdrop-filter: blur(12px); /* เบลอหลังฉากแบบกระจกฝ้า */
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  padding: 6px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  /* Animation ลอยขึ้น-ลงอย่างสมูท */
+  animation: dropdownSlideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top right;
+}
+
+@keyframes dropdownSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* รายการเมนูด้านใน */
+.admin-dropdown-item {
+  color: #e5e7eb;
+  padding: 9px 12px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+/* เอฟเฟกต์เวลา Hover ให้เมนูเลื่อนไปทางขวาเล็กน้อย */
+.admin-dropdown-item:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(4px);
+}
+
+/* เพิ่มส่วนนี้ลงไปใน ProductList.css เพื่อจัดระเบียบปุ่มใน Modal ให้เท่ากัน */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  flex: 1; /* ทำให้ปุ่มขยายความกว้างเท่ากันโดยอัตโนมัติ */
+  padding: 12px;
+  cursor: pointer;
+  font-size: 15px;
+}

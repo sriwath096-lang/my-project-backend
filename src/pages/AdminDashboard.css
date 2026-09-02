@@ -1,0 +1,497 @@
+/* ==========================================
+   Design tokens
+   โทนขาว-เทา นุ่มนวล มุมโค้งมน (rounded, soft)
+   ========================================== */
+:root {
+  --gray-25: #fcfcfd;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-150: #e9edf2;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
+
+  --accent: #2563eb;
+  --accent-dark: #1d4ed8;
+  --accent-soft: #eff6ff;
+
+  --success-bg: #ecfdf3;
+  --success-fg: #15803d;
+  --danger-bg: #fef2f2;
+  --danger-fg: #b91c1c;
+  --warning-bg: #fffbeb;
+  --warning-fg: #b45309;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 16px -4px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 20px 40px -12px rgba(15, 23, 42, 0.16);
+}
+
+/* ==========================================
+   1. โครงสร้างหลัก (Main Container Layout)
+   ========================================== */
+.admin-dashboard-container {
+  padding: 32px 24px 60px;
+  max-width: 1120px;
+  margin: 0 auto;
+  font-family: 'Kanit', 'Segoe UI', Roboto, sans-serif;
+  color: var(--gray-800);
+  background: var(--gray-50);
+}
+
+/* ==========================================
+   2. ส่วนหัวข้อหน้าแดชบอร์ด (Header Section)
+   ========================================== */
+.admin-header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.admin-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gray-900);
+  letter-spacing: -0.01em;
+}
+
+.admin-subtitle {
+  margin: 6px 0 0 0;
+  color: var(--gray-500);
+  font-size: 13.5px;
+}
+
+/* ปุ่มหลักสำหรับเพิ่มข้อมูล (เช่น เพิ่มสินค้าใหม่) */
+.btn-primary-add {
+  padding: 11px 22px;
+  background: var(--gray-900);
+  color: #ffffff;
+  border: 1px solid var(--gray-900);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.15s ease, transform 0.15s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary-add:hover {
+  background: var(--gray-700);
+  transform: translateY(-1px);
+}
+
+.btn-primary-add:active {
+  transform: translateY(0);
+}
+
+/* ==========================================
+   2.1 การ์ดสรุปภาพรวม (Stat Cards)
+   ========================================== */
+.stat-card {
+  background: #ffffff;
+  border: 1px solid var(--gray-150);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.stat-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.stat-card h4 {
+  margin: 0 0 6px 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.stat-card p {
+  margin: 0;
+  color: var(--gray-900);
+}
+
+/* ==========================================
+   3. สไตล์หน้าต่าง Modal ป๊อปอัพ (Modal Styles)
+   ========================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 🌟 ขยายความกว้าง Modal เป็น 750px เต็มตา ไม่เบียดกัน */
+.modal-content {
+  background: #ffffff !important;
+  padding: 36px !important;
+  border-radius: var(--radius-lg) !important;
+  width: 100% !important;
+  max-width: 750px !important;
+  box-shadow: var(--shadow-lg) !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  border: 1px solid var(--gray-150) !important;
+  box-sizing: border-box !important;
+}
+
+.modal-title-header {
+  margin-top: 0;
+  margin-bottom: 22px;
+  font-size: 17px;
+  color: var(--gray-900);
+  font-weight: 700;
+  border-bottom: 1px solid var(--gray-150);
+  padding-bottom: 14px;
+}
+
+/* ==========================================
+   4. ฟอร์มและช่องกรอกข้อมูลใน Modal
+   ========================================== */
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--gray-600);
+}
+
+.required {
+  color: var(--danger-fg);
+}
+
+.form-row-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+  font-size: 14px;
+  outline: none;
+  background-color: var(--gray-25);
+  color: var(--gray-800);
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.form-input:focus, .form-textarea:focus {
+  border-color: var(--gray-400);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px var(--gray-150);
+}
+
+.form-textarea {
+  resize: vertical;
+}
+
+/* ==========================================
+   5. ปุ่มเลือกรูปภาพและส่วนแสดงตัวอย่าง (Preview)
+   ========================================== */
+.image-input-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.image-input-group .form-input {
+  flex: 1;
+  min-width: 200px;
+}
+
+.btn-file-select {
+  padding: 11px 16px;
+  background: var(--gray-100);
+  color: var(--gray-700);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13.5px;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.btn-file-select:hover {
+  background: var(--gray-150);
+}
+
+/* ==========================================
+   6. ปุ่มกดด้านล่างใน Modal (บันทึก / ยกเลิก)
+   ========================================== */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.btn-submit,
+.btn-cancel {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.btn-submit {
+  background: var(--gray-900);
+  color: #ffffff;
+  border: 1px solid var(--gray-900);
+}
+
+.btn-submit:hover {
+  background: var(--gray-700);
+  transform: translateY(-1px);
+}
+
+.btn-cancel {
+  background: var(--gray-50);
+  color: var(--gray-600);
+  border: 1px solid var(--gray-200);
+}
+
+.btn-cancel:hover {
+  background: var(--gray-150);
+}
+
+/* ==========================================
+   7. ส่วนหัวตารางและช่องค้นหา (Product List & Search)
+   ========================================== */
+.product-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.product-list-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.search-input {
+  width: 280px;
+  padding: 10px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--gray-200);
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.search-input:focus {
+  border-color: var(--gray-400);
+  box-shadow: 0 0 0 3px var(--gray-150);
+}
+
+/* ==========================================
+   8. สไตล์ตารางข้อมูล (Table Styles)
+   ========================================== */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13.5px;
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-150);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.admin-table th {
+  background: var(--gray-50);
+  color: var(--gray-500);
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--gray-150);
+  font-weight: 600;
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.admin-table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--gray-100);
+  vertical-align: middle;
+}
+
+.admin-table tbody tr:hover {
+  background-color: var(--gray-50);
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* รูปภาพสินค้าในตาราง */
+.table-product-img {
+  width: 46px;
+  height: 46px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--gray-150);
+  display: block;
+  margin: 0 auto;
+}
+
+/* ==========================================
+   10. ปุ่มจัดการในตาราง (Edit & Delete Buttons)
+   ========================================== */
+.btn-edit {
+  background: var(--warning-bg);
+  color: var(--warning-fg);
+  border: 1px solid #fde68a;
+  padding: 6px 13px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12.5px;
+  margin-right: 6px;
+  transition: background 0.15s ease;
+}
+
+.btn-edit:hover {
+  background: #fef0c7;
+}
+
+.btn-delete {
+  background: var(--danger-bg);
+  color: var(--danger-fg);
+  border: 1px solid #fecaca;
+  padding: 6px 13px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12.5px;
+  transition: background 0.15s ease;
+}
+
+.btn-delete:hover {
+  background: #fee2e2;
+}
+
+/* ==========================================
+   11. สถานะเมื่อไม่มีข้อมูลและกำลังโหลด (States)
+   ========================================== */
+.loading-state {
+  text-align: center;
+  padding: 48px;
+  color: var(--gray-500);
+  font-size: 14px;
+}
+
+/* =========================================
+   Admin Table Actions & Top Buttons Spacing Fix
+   ========================================= */
+
+/* จัดระยะห่างปุ่มจัดการในตาราง (แก้ไข / ลบ) ไม่ให้ติดกันเกินไป */
+td .action-buttons,
+td div[style*="display: flex"] {
+  display: flex !important;
+  gap: 10px !important; /* เพิ่มระยะห่างระหว่างปุ่มแก้ไขกับลบ */
+  align-items: center !important;
+}
+
+/* จัดสไตล์ปุ่มหัวมุมขวาบน (จัดการหมวดหมู่ และ เพิ่มสินค้าใหม่) ให้ไอคอนกับข้อความตรงสวย ไม่เบียด */
+.admin-top-actions, 
+.dashboard-header-buttons,
+div[style*="display: flex; gap"] {
+  align-items: center;
+}
+
+/* จัดระยะห่างภายในปุ่มหัวมุมบน (เช่น จัดการหมวดหมู่) */
+.btn-manage-category, 
+a.btn-category,
+button.btn-category {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important; /* เว้นระยะห่างระหว่างไอคอนโฟลเดอร์กับคำว่า จัดการหมวดหมู่ */
+  padding: 10px 18px !important;
+  border-radius: 50px !important;
+  white-space: nowrap !important;
+}
+
+/* 🌟 คลาสเฉพาะสำหรับปุ่มเพิ่มหมวดหมู่ใน Modal ให้กว้างเต็มตาและกดง่าย */
+.btn-submit-category {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 14px 20px !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  border-radius: var(--radius-pill) !important;
+  background: var(--gray-900) !important;
+  color: #ffffff !important;
+  border: 1px solid var(--gray-900) !important;
+  cursor: pointer !important;
+  box-shadow: var(--shadow-sm) !important;
+  box-sizing: border-box !important;
+  margin-top: 4px !important;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.btn-submit-category:hover {
+  background: var(--gray-700) !important;
+  transform: translateY(-1px);
+}

@@ -1,0 +1,445 @@
+/* src/pages/AdminOrders.css */
+
+.admin-orders-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 32px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #f1f5f9;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.admin-orders-title {
+  font-size: 26px;
+  color: #0f172a; /* หัวข้อสีดำเข้มชัดเจน */
+  margin-bottom: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+/* ส่วนสรุปรายได้ */
+.revenue-summary-card {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.revenue-filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.revenue-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.revenue-filter-group label {
+  font-weight: 700;
+  color: #0f172a; /* ป้ายกำกับสีดำเข้ม */
+  font-size: 14px;
+}
+
+.revenue-select, .revenue-date-input {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  font-size: 14px;
+  font-weight: 500;
+  background: #ffffff;
+  color: #0f172a; /* ตัวอักษรสีดำ */
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.revenue-select:focus, .revenue-date-input:focus {
+  border-color: #0f172a;
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.1);
+}
+
+.revenue-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.stat-box {
+  background: #f8fafc;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+}
+
+.stat-box-title {
+  font-size: 13px;
+  color: #475569; /* ปรับให้อ่านง่ายขึ้น */
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.stat-box-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0f172a; /* ยอดเงินตัวเลขสีดำเข้มพรีเมียม */
+}
+
+.stat-box-sub {
+  font-size: 13px;
+  color: #334155;
+  font-weight: 600;
+}
+
+/* ส่วนค้นหาและตาราง */
+.orders-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.order-search-input {
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  width: 350px;
+  font-size: 14px;
+  font-weight: 500;
+  outline: none;
+  background: #ffffff;
+  color: #0f172a;
+  transition: all 0.2s ease;
+}
+
+.order-search-input::placeholder {
+  color: #64748b;
+}
+
+.order-search-input:focus {
+  border-color: #0f172a;
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.1);
+}
+
+.orders-count-text {
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.orders-table-wrapper {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.orders-table th {
+  padding: 18px 16px;
+  color: #0f172a; /* หัวตารางสีดำเข้ม ชัดเจน */
+  font-size: 14px;
+  font-weight: 750;
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.orders-table td {
+  padding: 18px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #1e293b; /* ข้อมูลในตารางสีดำเข้ม */
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Badges สถานะ */
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-block;
+  letter-spacing: 0.3px;
+}
+.badge-pending { background: #fef08a; color: #713f12; }
+.badge-paid { background: #bbf7d0; color: #14532d; }
+.badge-shipped { background: #bfdbfe; color: #1e3a8a; }
+.badge-cancelled { background: #fecaca; color: #7f1d1d; }
+
+/* ปุ่มต่างๆ */
+.btn-action {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.btn-action:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.btn-slip {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.btn-slip:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.status-select {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Pagination */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 20px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.page-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.page-btn.active {
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #ffffff;
+  font-weight: 750;
+}
+
+.page-btn:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+  border-color: #e2e8f0;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 24px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  border: 1px solid #f1f5f9;
+}
+
+.modal-close-x {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #0f172a;
+  font-weight: bold;
+}
+
+.modal-btn-close {
+  margin-top: 24px;
+  width: 100%;
+  padding: 12px;
+  background: #0f172a;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 750;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.modal-btn-close:hover {
+  background: #1e293b;
+}
+
+/* เพิ่มส่วนนี้ลงไปใน ProductList.css เพื่อจัดระเบียบปุ่มใน Modal ให้เท่ากัน */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  flex: 1; /* ทำให้ปุ่มขยายความกว้างเท่ากันโดยอัตโนมัติ */
+  padding: 12px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+@media print {
+  /* ซ่อนทุกอย่างในหน้าเว็บก่อน */
+  body * {
+    visibility: hidden;
+  }
+
+  /* แสดงเฉพาะกล่องรายงานสรุปยอดและข้อมูลภายในเท่านั้น */
+  .revenue-summary-card, 
+  .revenue-summary-card * {
+    visibility: visible;
+  }
+
+  /* ดึงกล่องรายงานให้แสดงผลเต็มหน้ากระดาษ PDF ด้านบนสุด */
+  .revenue-summary-card {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* ซ่อนปุ่มเลือกช่วงเวลา (Dropdown / Select / Input วันที่) ใน PDF ถ้าต้องการให้คลีนที่สุด (ถ้าอยากให้โชว์ช่วงเวลาที่เลือกไว้ด้วย บรรทัดนี้ข้ามได้ครับ) */
+  /* .revenue-filter-header { display: none; } */
+}
+
+@media print {
+  /* ซ่อนทุกอย่างบนหน้าเว็บปกติ */
+  body * {
+    visibility: hidden;
+  }
+
+  /* แสดงเฉพาะกล่องรายงานสำหรับการพิมพ์ */
+  .revenue-summary-card, 
+  .revenue-summary-card * {
+    visibility: visible;
+  }
+
+  /* ตั้งค่าหน้ากระดาษและล้าง positioning ทั้งหมดเพื่อไม่ให้ทับกัน */
+  .revenue-summary-card {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #fff !important;
+    display: block !important;
+  }
+
+  /* จัดระเบียบกล่องสถิติด้านบนให้อยู่เคียงกันสวยงาม */
+  .revenue-stats-grid {
+    display: flex !important;
+    gap: 15px !important;
+    margin-bottom: 20px !important;
+  }
+  .stat-box {
+    flex: 1 !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 15px !important;
+    border-radius: 8px !important;
+  }
+
+  /* จัดระเบียบรายการสินค้าแต่ละชิ้นให้อยู่บรรทัดใครบรรทัดมัน ไม่ให้ไหลไปทับตาราง */
+  .revenue-summary-card > div {
+    position: relative !important;
+    clear: both !important;
+    margin-bottom: 15px !important;
+  }
+
+  /* จัดตารางออเดอร์ด้านล่างให้เว้นระยะห่างลงมาอย่างเป็นระเบียบ ไม่ชนกับรายการสินค้า */
+  .revenue-summary-card .orders-table-wrapper {
+    position: relative !important;
+    clear: both !important;
+    margin-top: 30px !important;
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .orders-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  .orders-table th, .orders-table td {
+    border: 1px solid #cbd5e1 !important;
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+  }
+
+  /* ซ่อนปุ่มเมนูและส่วนที่ไม่เกี่ยวข้องอื่นๆ */
+  .admin-orders-container > div:first-child,
+  .revenue-filter-header,
+  .orders-toolbar,
+  .pagination-container,
+  .admin-orders-title,
+  button {
+    display: none !important;
+  }
+}
+
