@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useCart } from '../context/CartContext';
 import API from '../services/api';
+import { BASE_URL } from '../config';
 
 export default function Cart() {
   const { cart, updateQuantity, removeFromCart, clearCart, totalPrice, getItemKey } = useCart();
@@ -41,7 +42,7 @@ export default function Cart() {
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
     }
-    return `http://localhost:5000${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+    return `${BASE_URL}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
   };
 
   // จัดการเมื่อเลือกไฟล์รูปสลิป

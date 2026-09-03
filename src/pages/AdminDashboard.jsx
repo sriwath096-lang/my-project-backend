@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 import API from '../services/api';
+import { BASE_URL } from '../config';
 import './AdminDashboard.css';
 
 export default function AdminDashboard() {
@@ -74,7 +75,7 @@ export default function AdminDashboard() {
   const getProductImgUrl = (path) => {
     if (!path) return 'https://via.placeholder.com/50?text=No+Image';
     if (path.startsWith('http') || path.startsWith('blob:')) return path;
-    return `http://localhost:5000${path.startsWith('/') ? '' : '/'}${path}`;
+    return `${BASE_URL}${path.startsWith('/') ? '' : '/'}${path}`;
   };
 
   const handleFileChange = (e) => {

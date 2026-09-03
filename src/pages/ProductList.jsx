@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import API from '../services/api';
+import { BASE_URL } from '../config';
 import { useCart } from '../context/CartContext';
 import './ProductList.css';
 
@@ -41,7 +42,7 @@ export default function ProductList() {
   const getProductImgUrl = (path) => {
     if (!path) return 'https://via.placeholder.com/200?text=No+Image';
     if (path.startsWith('http') || path.startsWith('blob:')) return path;
-    return `http://localhost:5000${path.startsWith('/') ? '' : '/'}${path}`;
+    return `${BASE_URL}${path.startsWith('/') ? '' : '/'}${path}`;
   };
 
   const parseSizes = (sizes) => {

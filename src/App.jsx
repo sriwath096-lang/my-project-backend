@@ -4,6 +4,7 @@ import { Toaster, toast } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider, useCart } from './context/CartContext';
 import { ProtectedRoute } from './routes/ProtectedRoute';
+import { BASE_URL, API_URL } from './config';
 import './Navbar.css';
 
 // Import หน้าต่าง ๆ
@@ -138,14 +139,14 @@ const MyOrders = () => {
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
     }
-    return `http://localhost:5000${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+    return `${BASE_URL}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
   };
 
   useEffect(() => {
     const fetchMyOrders = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:5000/api/orders/my-orders', {
+        const res = await fetch(`${API_URL}/orders/my-orders`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

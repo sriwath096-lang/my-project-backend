@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 import API from '../services/api';
+import { BASE_URL } from '../config';
 
 export default function AdminProductManagement() {
   const [products, setProducts] = useState([]);
@@ -163,7 +164,7 @@ export default function AdminProductManagement() {
       setHasShoes(false);
     }
 
-    const fullImg = p.image_url ? (p.image_url.startsWith('http') ? p.image_url : `http://localhost:5000${p.image_url}`) : null;
+    const fullImg = p.image_url ? (p.image_url.startsWith('http') ? p.image_url : `${BASE_URL}${p.image_url}`) : null;
     setExistingImageUrl(p.image_url || '');
     setImagePreview(fullImg);
   };
@@ -238,7 +239,7 @@ export default function AdminProductManagement() {
             {products.map((p) => (
               <tr key={p.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                 <td style={{ padding: '16px' }}>
-                  {p.image_url ? <img src={p.image_url.startsWith('http') ? p.image_url : `http://localhost:5000${p.image_url}`} alt={p.name} style={{ width: '70px', height: '70px', objectFit: 'cover', borderRadius: '10px', border: '1px solid #e2e8f0' }} /> : <span style={{ color: '#94a3b8' }}>ไม่มีรูป</span>}
+                  {p.image_url ? <img src={p.image_url.startsWith('http') ? p.image_url : `${BASE_URL}${p.image_url}`} alt={p.name} style={{ width: '70px', height: '70px', objectFit: 'cover', borderRadius: '10px', border: '1px solid #e2e8f0' }} /> : <span style={{ color: '#94a3b8' }}>ไม่มีรูป</span>}
                 </td>
                 <td style={{ padding: '16px' }}><strong style={{ fontSize: '15px', color: '#0f172a' }}>{p.name}</strong></td>
                 <td style={{ padding: '16px', fontWeight: '700' }}>{Number(p.price).toLocaleString()} ฿</td>

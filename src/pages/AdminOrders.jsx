@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import API from '../services/api';
+import { BASE_URL } from '../config';
 import './AdminOrders.css'; 
 
 export default function AdminOrders() {
@@ -198,13 +199,13 @@ export default function AdminOrders() {
   const getSlipUrl = (path) => {
     if (!path) return '';
     if (path.startsWith('http')) return path;
-    return `http://localhost:5000${path.startsWith('/') ? '' : '/'}${path}`;
+    return `${BASE_URL}${path.startsWith('/') ? '' : '/'}${path}`;
   };
 
   const getProductImgUrl = (path) => {
     if (!path) return 'https://via.placeholder.com/60?text=No+Image';
     if (path.startsWith('http')) return path;
-    return `http://localhost:5000${path.startsWith('/') ? '' : '/'}${path}`;
+    return `${BASE_URL}${path.startsWith('/') ? '' : '/'}${path}`;
   };
 
   const getCustomerPhone = (order) => {
