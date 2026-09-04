@@ -1,5 +1,5 @@
 // src/context/CartContext.jsx
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useAuth } from './AuthContext';
 
 const CartContext = createContext();
@@ -12,10 +12,17 @@ export function CartProvider({ children }) {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // รีเซ็ตและล้างตะกร้าสินค้าเมื่อมีการสลับผู้ใช้หรือ Logout
+  // เก็บ user.id ตัวก่อนหน้าไว้เทียบ เพื่อไม่ให้ล้างตะกร้าตอนเปิดหน้าเว็บ/รีเฟรชครั้งแรก
+  const previousUserId = useRef(user?.id);
+
+  // ล้างตะกร้าเฉพาะตอน "สลับผู้ใช้จริงๆ" (login คนละคน หรือ logout) เท่านั้น
+  // ไม่ล้างตอนโหลดหน้าเว็บครั้งแรก เพราะ effect นี้จะรันทันทีตอน mount เสมอ
   useEffect(() => {
-    setCart([]);
-    localStorage.removeItem('cart');
+    if (previousUserId.current !== user?.id) {
+      setCart([]);
+      localStorage.removeItem('cart');
+    }
+    previousUserId.current = user?.id;
   }, [user?.id]);
 
   // บันทึกข้อมูลลง localStorage ทุกครั้งที่ตะกร้าเปลี่ยน
