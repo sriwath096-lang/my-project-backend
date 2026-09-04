@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
+const cloudinary = require('cloudinary').v2;
 const db = require('./db');
 require('dotenv').config();
 
@@ -15,26 +16,33 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
-// เปิดให้เข้าถึงโฟลเดอร์อัปโหลดรูปภาพ
+// เปิดให้เข้าถึงรูปเก่าที่ยังอยู่ในโฟลเดอร์ uploads (ไฟล์ที่มากับโค้ดตอน deploy เท่านั้น
+// รูปที่อัปโหลดใหม่หลังจากนี้จะถูกส่งไปเก็บที่ Cloudinary แทน เพราะ Vercel เขียนไฟล์ลงดิสก์ถาวรไม่ได้)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// สร้างโฟลเดอร์ uploads อัตโนมัติถ้ายังไม่มี
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-// ตั้งค่า Multer สำหรับอัปโหลดรูปภาพ
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = path.extname(file.originalname);
-    cb(null, 'product-' + uniqueSuffix + ext);
-  }
+// ตั้งค่า Cloudinary จาก Environment Variables
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
+// อัปโหลดไฟล์ (buffer) ขึ้น Cloudinary แล้วคืนค่า URL แบบ https
+const uploadBufferToCloudinary = (buffer, folder) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder, resource_type: 'image' },
+      (err, result) => {
+        if (err) return reject(err);
+        resolve(result.secure_url);
+      }
+    );
+    stream.end(buffer);
+  });
+};
+
+// ตั้งค่า Multer ให้เก็บไฟล์ไว้ใน memory ก่อน (ไม่เขียนลงดิสก์) แล้วค่อยส่งต่อขึ้น Cloudinary
+const storage = multer.memoryStorage();
 
 const upload = multer({
   storage: storage,
@@ -252,6 +260,52 @@ app.delete('/api/categories/:id', authenticateToken, isAdmin, async (req, res) =
 });
 
 // ==========================================
+// 3.5. Payment Settings APIs (ข้อมูลบัญชี + QR สำหรับหน้าชำระเงิน)
+// ==========================================
+app.get('/api/payment-settings', async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM payment_settings ORDER BY id DESC LIMIT 1');
+    if (rows.length === 0) {
+      return res.json({ bank_name: '', account_name: '', account_number: '', qr_image_url: '' });
+    }
+    res.json(rows[0]);
+  } catch (err) {
+    console.error('Fetch Payment Settings Error:', err);
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการดึงข้อมูลช่องทางการชำระเงิน' });
+  }
+});
+
+app.put('/api/payment-settings', authenticateToken, isAdmin, upload.single('qr_image'), async (req, res) => {
+  const { bank_name, account_name, account_number, existing_qr_image_url } = req.body;
+
+  try {
+    let qrImageUrl = existing_qr_image_url || '';
+    if (req.file) {
+      qrImageUrl = await uploadBufferToCloudinary(req.file.buffer, 'udom/payment-qr');
+    }
+
+    const [rows] = await db.query('SELECT id FROM payment_settings ORDER BY id DESC LIMIT 1');
+
+    if (rows.length === 0) {
+      await db.query(
+        'INSERT INTO payment_settings (bank_name, account_name, account_number, qr_image_url) VALUES (?, ?, ?, ?)',
+        [bank_name, account_name, account_number, qrImageUrl]
+      );
+    } else {
+      await db.query(
+        'UPDATE payment_settings SET bank_name = ?, account_name = ?, account_number = ?, qr_image_url = ? WHERE id = ?',
+        [bank_name, account_name, account_number, qrImageUrl, rows[0].id]
+      );
+    }
+
+    res.json({ message: 'บันทึกช่องทางการชำระเงินเรียบร้อยแล้ว', qr_image_url: qrImageUrl });
+  } catch (err) {
+    console.error('Update Payment Settings Error:', err);
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการบันทึกช่องทางการชำระเงิน' });
+  }
+});
+
+// ==========================================
 // 4. Product APIs
 // ==========================================
 
@@ -270,7 +324,7 @@ app.post('/api/products', authenticateToken, isAdmin, upload.single('image'), as
   try {
     let finalImageUrl = image_url || '';
     if (req.file) {
-      finalImageUrl = `/uploads/${req.file.filename}`;
+      finalImageUrl = await uploadBufferToCloudinary(req.file.buffer, 'udom/products');
     }
 
     const [result] = await db.query(
@@ -292,7 +346,7 @@ app.put('/api/products/:id', authenticateToken, isAdmin, upload.single('image'),
   try {
     let finalImageUrl = image_url;
     if (req.file) {
-      finalImageUrl = `/uploads/${req.file.filename}`;
+      finalImageUrl = await uploadBufferToCloudinary(req.file.buffer, 'udom/products');
     }
 
     await db.query(
@@ -333,7 +387,7 @@ app.post('/api/orders', authenticateToken, upload.single('slip_image'), async (r
       return res.status(400).json({ message: 'กรุณาแนบหลักฐานการโอนเงิน (สลิป)' });
     }
 
-    const slipImageUrl = `/uploads/${req.file.filename}`;
+    const slipImageUrl = await uploadBufferToCloudinary(req.file.buffer, 'udom/slips');
     const connection = await db.getConnection();
 
     try {
@@ -536,4 +590,11 @@ app.delete('/api/admin/orders/:id', authenticateToken, isAdmin, async (req, res)
 // 6. Start Server
 // ==========================================
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Backend running on port ${PORT}`));
+
+// รัน app.listen() เฉพาะตอนพัฒนาบนเครื่อง (local) เท่านั้น
+// บน Vercel จะไม่เรียก listen() เพราะ Vercel จัดการ request แบบ Serverless Function เอง
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => console.log(`🚀 Backend running on port ${PORT}`));
+}
+
+module.exports = app;
