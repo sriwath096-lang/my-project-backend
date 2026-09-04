@@ -19,21 +19,28 @@ export default function Cart() {
 
   // State สำหรับเก็บข้อมูลบัญชีธนาคารที่ตั้งค่าจากฝั่ง Admin
   const [paymentInfo, setPaymentInfo] = useState({
-    bankName: 'กสิกรไทย (KBank)',
-    accountName: 'บจก. อุดม ช้อป',
-    accountNumber: '123-4-56789-0'
+    bankName: '',
+    accountName: '',
+    accountNumber: ''
   });
+  const [qrImageUrl, setQrImageUrl] = useState('');
 
-  // โหลดข้อมูลบัญชีธนาคารจาก Admin Settings (LocalStorage)
+  // โหลดข้อมูลบัญชีธนาคาร + QR จาก Backend (เห็นเหมือนกันทุกคนทุกเครื่อง)
   useEffect(() => {
-    const savedPayment = localStorage.getItem('paymentSettings');
-    if (savedPayment) {
+    const fetchPaymentInfo = async () => {
       try {
-        setPaymentInfo(JSON.parse(savedPayment));
+        const res = await API.get('/payment-settings');
+        setPaymentInfo({
+          bankName: res.data.bank_name || '',
+          accountName: res.data.account_name || '',
+          accountNumber: res.data.account_number || ''
+        });
+        setQrImageUrl(res.data.qr_image_url || '');
       } catch (e) {
         console.error(e);
       }
-    }
+    };
+    fetchPaymentInfo();
   }, []);
 
   // ฟังก์ชันช่วยจัดการ URL ของรูปภาพ
@@ -332,6 +339,17 @@ export default function Cart() {
               <p style={{ margin: '12px 0 0 0', fontSize: '22px', fontWeight: 'bold', color: '#2563eb', letterSpacing: '1px' }}>
                 {paymentInfo.accountNumber}
               </p>
+
+              {qrImageUrl && (
+                <div style={{ marginTop: '16px', textAlign: 'center' }}>
+                  <img
+                    src={getImageUrl(qrImageUrl)}
+                    alt="QR Code สำหรับโอนเงิน"
+                    style={{ width: '160px', height: '160px', objectFit: 'contain', borderRadius: '10px', border: '1px solid #e2e8f0', background: '#ffffff' }}
+                  />
+                  <p style={{ margin: '8px 0 0 0', fontSize: '13px', color: '#64748b' }}>สแกน QR เพื่อโอนเงิน</p>
+                </div>
+              )}
             </div>
 
             {/* กล่องอัปโหลดสลิป */}
