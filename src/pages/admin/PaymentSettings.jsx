@@ -13,9 +13,6 @@ export default function PaymentSettings() {
   const [qrImageUrl, setQrImageUrl] = useState('');
   const [qrImageFile, setQrImageFile] = useState(null);
   const [qrPreview, setQrPreview] = useState('');
-  const [slipImageUrl, setSlipImageUrl] = useState('');
-  const [slipImageFile, setSlipImageFile] = useState(null);
-  const [slipPreview, setSlipPreview] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -30,7 +27,6 @@ export default function PaymentSettings() {
           account_number: res.data.account_number || ''
         });
         setQrImageUrl(res.data.qr_image_url || '');
-        setSlipImageUrl(res.data.slip_image_url || '');
       } catch (err) {
         console.error(err);
         toast.error('ไม่สามารถโหลดข้อมูลการชำระเงินได้');
@@ -53,14 +49,6 @@ export default function PaymentSettings() {
     }
   };
 
-  const handleSlipFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSlipImageFile(file);
-      setSlipPreview(URL.createObjectURL(file));
-    }
-  };
-
   const handleSave = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -70,12 +58,8 @@ export default function PaymentSettings() {
       formData.append('account_name', bankInfo.account_name);
       formData.append('account_number', bankInfo.account_number);
       formData.append('existing_qr_image_url', qrImageUrl);
-      formData.append('existing_slip_image_url', slipImageUrl);
       if (qrImageFile) {
         formData.append('qr_image', qrImageFile);
-      }
-      if (slipImageFile) {
-        formData.append('shop_slip_image', slipImageFile);
       }
 
       const res = await API.put('/payment-settings', formData, {
@@ -85,9 +69,6 @@ export default function PaymentSettings() {
       setQrImageUrl(res.data.qr_image_url || '');
       setQrImageFile(null);
       setQrPreview('');
-      setSlipImageUrl(res.data.slip_image_url || '');
-      setSlipImageFile(null);
-      setSlipPreview('');
       toast.success('บันทึกช่องทางการชำระเงินเรียบร้อยแล้ว!');
     } catch (err) {
       console.error(err);
@@ -190,29 +171,6 @@ export default function PaymentSettings() {
           </p>
         </div>
 
-        <div>
-          <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px', color: '#1e293b', fontSize: '14px' }}>
-            รูปสลิปของทางร้าน (แสดงที่หน้าชำระเงิน)
-          </label>
-
-          {(slipPreview || slipImageUrl) && (
-            <img
-              src={slipPreview || getImageUrl(slipImageUrl)}
-              alt="รูปสลิปของร้าน ตัวอย่าง"
-              style={{ width: '180px', height: '180px', objectFit: 'contain', borderRadius: '12px', border: '1px solid #e2e8f0', background: '#f8fafc', marginBottom: '10px', display: 'block' }}
-            />
-          )}
-
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleSlipFileChange}
-            style={{ width: '100%', padding: '10px', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '14px', background: '#f8fafc' }}
-          />
-          <p style={{ color: '#94a3b8', fontSize: '12px', marginTop: '6px' }}>
-            รูปนี้จะไปแสดงคู่กับข้อมูลบัญชีที่หน้าชำระเงินของลูกค้าด้วย
-          </p>
-        </div>
 
         <button
           type="submit"

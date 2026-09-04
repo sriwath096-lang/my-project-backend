@@ -24,9 +24,8 @@ export default function Cart() {
     accountNumber: ''
   });
   const [qrImageUrl, setQrImageUrl] = useState('');
-  const [slipImageUrl, setSlipImageUrl] = useState('');
 
-  // โหลดข้อมูลบัญชีธนาคาร + QR + รูปสลิปร้าน จาก Backend (เห็นเหมือนกันทุกคนทุกเครื่อง)
+  // โหลดข้อมูลบัญชีธนาคาร + QR จาก Backend (เห็นเหมือนกันทุกคนทุกเครื่อง)
   useEffect(() => {
     const fetchPaymentInfo = async () => {
       try {
@@ -37,7 +36,6 @@ export default function Cart() {
           accountNumber: res.data.account_number || ''
         });
         setQrImageUrl(res.data.qr_image_url || '');
-        setSlipImageUrl(res.data.slip_image_url || '');
       } catch (e) {
         console.error(e);
       }
@@ -350,17 +348,6 @@ export default function Cart() {
                     style={{ width: '160px', height: '160px', objectFit: 'contain', borderRadius: '10px', border: '1px solid #e2e8f0', background: '#ffffff' }}
                   />
                   <p style={{ margin: '8px 0 0 0', fontSize: '13px', color: '#64748b' }}>สแกน QR เพื่อโอนเงิน</p>
-                </div>
-              )}
-
-              {slipImageUrl && (
-                <div style={{ marginTop: '16px', textAlign: 'center' }}>
-                  <img
-                    src={getImageUrl(slipImageUrl)}
-                    alt="รูปสลิปของทางร้าน"
-                    style={{ width: '160px', height: '160px', objectFit: 'contain', borderRadius: '10px', border: '1px solid #e2e8f0', background: '#ffffff' }}
-                  />
-                  <p style={{ margin: '8px 0 0 0', fontSize: '13px', color: '#64748b' }}>ตัวอย่างสลิปของทางร้าน</p>
                 </div>
               )}
             </div>
