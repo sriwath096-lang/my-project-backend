@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { Toaster, toast } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider, useCart } from './context/CartContext';
@@ -375,11 +375,13 @@ function Navbar() {
   
   const [isAdminDropdownOpen, setIsAdminDropdownOpen] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   const confirmLogout = () => {
     logout();
     setShowLogoutConfirm(false);
+    setIsMobileMenuOpen(false);
     navigate('/login');
   };
 
@@ -394,6 +396,12 @@ function Navbar() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  const location = useLocation();
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+    setIsAdminDropdownOpen(false);
+  }, [location.pathname]);
 
   return (
     <nav className="navbar">
@@ -415,7 +423,16 @@ function Navbar() {
         </Link>
       </div>
 
-      <div className="navbar-links">
+      <button
+        className="navbar-hamburger"
+        onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+        aria-label="เปิด/ปิดเมนู"
+        type="button"
+      >
+        {isMobileMenuOpen ? '✕' : '☰'}
+      </button>
+
+      <div className={`navbar-links ${isMobileMenuOpen ? 'navbar-links-open' : ''}`}>
         <Link to="/" className="nav-link">หน้าร้านค้า</Link>
         
         <Link to="/cart" className="nav-link-cart">

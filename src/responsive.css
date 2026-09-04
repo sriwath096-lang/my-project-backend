@@ -1,0 +1,61 @@
+/* =========================================
+   Global Mobile Responsive Fixes
+   ครอบคลุมทุกหน้า: แก้ input/search กว้างตายตัว,
+   toolbar ที่ล้นจอ, ตารางแอดมิน, และ modal บนมือถือ
+   ========================================= */
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 12px !important;
+  }
+
+  /* ช่องค้นหาที่ตั้งความกว้างตายตัวไว้ (px) ให้เต็มความกว้างจอแทน */
+  .order-search-input,
+  .product-search-input,
+  input[type="search"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* แถบเครื่องมือด้านบนของหน้าแอดมิน ให้ซ้อนกันแนวตั้งแทนเรียงแนวนอน */
+  .orders-toolbar,
+  .product-header-toolbar,
+  .admin-toolbar,
+  .admin-header-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  /* ตารางข้อมูลแอดมิน: บังคับให้เลื่อนแนวนอนได้แทนที่จะบีบอัดจนอ่านไม่ออก */
+  .admin-table,
+  .orders-table {
+    min-width: 640px;
+  }
+
+  .table-responsive-wrapper,
+  .orders-table-wrapper {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* กล่อง Modal ทั่วไป ให้เว้นขอบจอไว้เสมอ ไม่ชิดขอบเกินไป */
+  .modal-content {
+    width: 92% !important;
+    margin: 0 auto;
+  }
+
+  /* การ์ด/กริดสรุปสถิติในหน้าแอดมิน ให้ลดจำนวนคอลัมน์ */
+  .stats-grid,
+  .dashboard-stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .stats-grid,
+  .dashboard-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
