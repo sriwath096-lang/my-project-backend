@@ -248,6 +248,34 @@ app.post('/api/categories', authenticateToken, isAdmin, async (req, res) => {
   }
 });
 
+app.put('/api/categories/:id', authenticateToken, isAdmin, async (req, res) => {
+  const categoryId = req.params.id;
+  const { name, parent_id } = req.body;
+  if (!name) {
+    return res.status(400).json({ message: 'กรุณากรอกชื่อหมวดหมู่' });
+  }
+
+  try {
+    if (parent_id && Number(parent_id) === Number(categoryId)) {
+      return res.status(400).json({ message: 'ไม่สามารถตั้งหมวดหมู่ให้เป็นหมวดหมู่ย่อยของตัวเองได้' });
+    }
+
+    const [existing] = await db.query('SELECT id FROM categories WHERE name = ? AND id != ?', [name, categoryId]);
+    if (existing.length > 0) {
+      return res.status(400).json({ message: 'มีหมวดหมู่นี้อยู่ในระบบแล้ว' });
+    }
+
+    await db.query(
+      'UPDATE categories SET name = ?, parent_id = ? WHERE id = ?',
+      [name, parent_id || null, categoryId]
+    );
+    res.json({ message: 'แก้ไขหมวดหมู่สำเร็จ', id: Number(categoryId), name, parent_id: parent_id || null });
+  } catch (err) {
+    console.error('Update Category Error:', err);
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการแก้ไขหมวดหมู่' });
+  }
+});
+
 app.delete('/api/categories/:id', authenticateToken, isAdmin, async (req, res) => {
   const categoryId = req.params.id;
   try {
