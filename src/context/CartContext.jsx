@@ -37,18 +37,25 @@ export function CartProvider({ children }) {
   // เพิ่มสินค้าลงตะกร้า (รองรับการระบุจำนวนชิ้น)
 const addToCart = (product, quantityToAdd = 1) => {
   const qty = Number(quantityToAdd) || 1;
+  const maxStock = Number(product.stock);
+  const hasStockLimit = Number.isFinite(maxStock);
+
   setCart((prev) => {
     const targetKey = getItemKey(product);
     const existing = prev.find((item) => getItemKey(item) === targetKey);
 
     if (existing) {
+      const newQty = existing.quantity + qty;
+      const clampedQty = hasStockLimit ? Math.min(newQty, maxStock) : newQty;
       return prev.map((item) =>
         getItemKey(item) === targetKey
-          ? { ...item, quantity: item.quantity + qty }
+          ? { ...item, quantity: clampedQty }
           : item
       );
     }
-    return [...prev, { ...product, quantity: qty, cartKey: targetKey }];
+
+    const clampedQty = hasStockLimit ? Math.min(qty, maxStock) : qty;
+    return [...prev, { ...product, quantity: clampedQty, cartKey: targetKey }];
   });
 };
   // ลบสินค้าออกจากตะกร้าโดยใช้ cartKey หรือ id+size
@@ -63,9 +70,12 @@ const addToCart = (product, quantityToAdd = 1) => {
       return;
     }
     setCart((prev) =>
-      prev.map((item) =>
-        (item.cartKey || getItemKey(item)) === targetKey ? { ...item, quantity } : item
-      )
+      prev.map((item) => {
+        if ((item.cartKey || getItemKey(item)) !== targetKey) return item;
+        const maxStock = Number(item.stock);
+        const clampedQty = Number.isFinite(maxStock) ? Math.min(quantity, maxStock) : quantity;
+        return { ...item, quantity: clampedQty };
+      })
     );
   };
 
