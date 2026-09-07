@@ -11,7 +11,13 @@ export default function Register() {
 
   const onSubmit = async (data) => {
     try {
-      await API.post('/register', data);
+      await API.post('/register', {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        password: data.password,
+        phone: data.phone
+      });
       toast.success('สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบ');
       navigate('/login', { replace: true });
     } catch (err) {
