@@ -39,6 +39,7 @@ export default function AdminDashboard() {
 
   const [newCategoryName, setNewCategoryName] = useState(''); 
   const [newCategoryParentId, setNewCategoryParentId] = useState(''); 
+  const [editingCategoryId, setEditingCategoryId] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -241,14 +242,36 @@ export default function AdminDashboard() {
         name: newCategoryName,
         parent_id: newCategoryParentId ? Number(newCategoryParentId) : null 
       };
-      await API.post('/categories', payload);
-      toast.success('เพิ่มหมวดหมู่สำเร็จ');
+
+      if (editingCategoryId) {
+        await API.put(`/categories/${editingCategoryId}`, payload);
+        toast.success('แก้ไขหมวดหมู่สำเร็จ');
+        setEditingCategoryId(null);
+      } else {
+        await API.post('/categories', payload);
+        toast.success('เพิ่มหมวดหมู่สำเร็จ');
+      }
+
       setNewCategoryName('');
       setNewCategoryParentId('');
       fetchCategories(); 
     } catch (err) {
-      toast.error(err.response?.data?.message || 'เกิดข้อผิดพลาดในการเพิ่มหมวดหมู่');
+      toast.error(err.response?.data?.message || 'เกิดข้อผิดพลาด');
     }
+  };
+
+  // เริ่มแก้ไขหมวดหมู่: นำข้อมูลเดิมมาใส่ในฟอร์มด้านบน
+  const handleEditCategoryClick = (cat) => {
+    setEditingCategoryId(cat.id);
+    setNewCategoryName(cat.name);
+    setNewCategoryParentId(cat.parent_id ? String(cat.parent_id) : '');
+  };
+
+  // ยกเลิกการแก้ไข กลับเป็นฟอร์มเพิ่มหมวดหมู่ใหม่ตามปกติ
+  const handleCancelEditCategory = () => {
+    setEditingCategoryId(null);
+    setNewCategoryName('');
+    setNewCategoryParentId('');
   };
 
   const handleDeleteCategory = async (id) => {
@@ -256,6 +279,7 @@ export default function AdminDashboard() {
     try {
       await API.delete(`/categories/${id}`);
       toast.success('ลบหมวดหมู่สำเร็จ');
+      if (editingCategoryId === id) handleCancelEditCategory();
       fetchCategories(); 
     } catch (err) {
       toast.error('เกิดข้อผิดพลาดในการลบหมวดหมู่');
@@ -366,12 +390,14 @@ export default function AdminDashboard() {
                 style={{ backgroundColor: '#fff', cursor: 'pointer', borderRadius: '12px' }}
               >
                 <option value="">-- สร้างเป็นหมวดหมู่หลัก --</option>
-                {mainCategories.map((cat) => (
-                  <option key={cat.id} value={String(cat.id)}>📁 {cat.name}</option>
-                ))}
+                {mainCategories
+                  .filter((cat) => cat.id !== editingCategoryId)
+                  .map((cat) => (
+                    <option key={cat.id} value={String(cat.id)}>📁 {cat.name}</option>
+                  ))}
               </select>
               
-              {/* ปุ่มเพิ่มหมวดหมู่บังคับขยายเต็มร้อยด้วย CSS Inline แบบเจาะจง */}
+              {/* ปุ่มเพิ่ม/แก้ไขหมวดหมู่บังคับขยายเต็มร้อยด้วย CSS Inline แบบเจาะจง */}
               <button 
                 type="submit" 
                 style={{ 
@@ -383,7 +409,7 @@ export default function AdminDashboard() {
                   fontSize: '16px', 
                   fontWeight: '700',
                   borderRadius: '50px', 
-                  background: '#0f172a', 
+                  background: editingCategoryId ? '#2563eb' : '#0f172a', 
                   color: '#ffffff', 
                   border: 'none', 
                   cursor: 'pointer', 
@@ -392,8 +418,28 @@ export default function AdminDashboard() {
                   marginTop: '6px'
                 }}
               >
-                ➕ เพิ่มหมวดหมู่
+                {editingCategoryId ? '💾 บันทึกการแก้ไข' : '➕ เพิ่มหมวดหมู่'}
               </button>
+
+              {editingCategoryId && (
+                <button
+                  type="button"
+                  onClick={handleCancelEditCategory}
+                  style={{
+                    width: '100%',
+                    padding: '10px 20px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    borderRadius: '50px',
+                    background: '#f1f5f9',
+                    color: '#475569',
+                    border: 'none',
+                    cursor: 'pointer'
+                  }}
+                >
+                  ยกเลิกการแก้ไข
+                </button>
+              )}
             </form>
 
             <hr style={{ border: '0', borderTop: '1px solid #e2e8f0', margin: '15px 0' }} />
@@ -405,26 +451,36 @@ export default function AdminDashboard() {
               ) : (
                 categories.map((cat) => {
                   const parentCat = categories.find(c => c.id === cat.parent_id);
+                  const isEditingThis = editingCategoryId === cat.id;
                   return (
-                    <div key={cat.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', background: '#f8fafc', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                    <div key={cat.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', background: isEditingThis ? '#eff6ff' : '#f8fafc', borderRadius: '12px', border: isEditingThis ? '1px solid #93c5fd' : '1px solid #e2e8f0' }}>
                       <div>
                         <span style={{ fontWeight: '600', color: '#1e293b', fontSize: '14px' }}>{cat.name}</span>
                         {parentCat && <span style={{ fontSize: '12px', color: '#64748b', marginLeft: '8px' }}>(ย่อยของ: {parentCat.name})</span>}
                       </div>
-                      <button 
-                        type="button" 
-                        onClick={() => handleDeleteCategory(cat.id)}
-                        style={{ background: '#ef4444', color: '#fff', border: 'none', padding: '6px 14px', borderRadius: '50px', cursor: 'pointer', fontSize: '12px', fontWeight: '600' }}
-                      >
-                        ลบ
-                      </button>
+                      <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
+                        <button 
+                          type="button" 
+                          onClick={() => handleEditCategoryClick(cat)}
+                          style={{ background: '#2563eb', color: '#fff', border: 'none', padding: '6px 14px', borderRadius: '50px', cursor: 'pointer', fontSize: '12px', fontWeight: '600' }}
+                        >
+                          แก้ไข
+                        </button>
+                        <button 
+                          type="button" 
+                          onClick={() => handleDeleteCategory(cat.id)}
+                          style={{ background: '#ef4444', color: '#fff', border: 'none', padding: '6px 14px', borderRadius: '50px', cursor: 'pointer', fontSize: '12px', fontWeight: '600' }}
+                        >
+                          ลบ
+                        </button>
+                      </div>
                     </div>
                   );
                 })
               )}
             </div>
 
-            <button type="button" onClick={() => setIsCategoryModalOpen(false)} className="btn-cancel" style={{ width: '100%', borderRadius: '50px' }}>ปิดหน้าต่าง</button>
+            <button type="button" onClick={() => { setIsCategoryModalOpen(false); handleCancelEditCategory(); }} className="btn-cancel" style={{ width: '100%', borderRadius: '50px' }}>ปิดหน้าต่าง</button>
           </div>
         </div>
       )}
