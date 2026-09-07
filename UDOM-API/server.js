@@ -414,7 +414,7 @@ app.post('/api/orders', authenticateToken, upload.single('slip_image'), async (r
 
       for (const item of items) {
         const [rows] = await connection.query('SELECT stock, sizes FROM products WHERE id = ? FOR UPDATE', [item.id]);
-        
+
         if (rows.length > 0) {
           const product = rows[0];
           let newSizes = null;
@@ -422,10 +422,21 @@ app.post('/api/orders', authenticateToken, upload.single('slip_image'), async (r
 
           if (product.sizes) {
             const sizesObj = typeof product.sizes === 'string' ? JSON.parse(product.sizes) : product.sizes;
-            
+
             if (item.selectedSize && sizesObj[item.selectedSize] !== undefined) {
-              sizesObj[item.selectedSize] = Math.max(0, sizesObj[item.selectedSize] - buyQty);
+              const availableForSize = Number(sizesObj[item.selectedSize]) || 0;
+              if (buyQty > availableForSize) {
+                await connection.rollback();
+                return res.status(400).json({ message: `สินค้าไซส์ ${item.selectedSize} เหลือไม่พอ (เหลือ ${availableForSize} ชิ้น)` });
+              }
+              sizesObj[item.selectedSize] = availableForSize - buyQty;
               newSizes = JSON.stringify(sizesObj);
+            }
+          } else {
+            const availableStock = Number(product.stock) || 0;
+            if (buyQty > availableStock) {
+              await connection.rollback();
+              return res.status(400).json({ message: `สินค้าเหลือไม่พอ (เหลือ ${availableStock} ชิ้น)` });
             }
           }
 
