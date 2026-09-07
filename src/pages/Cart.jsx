@@ -14,6 +14,13 @@ export default function Cart() {
   const [slipFile, setSlipFile] = useState(null);
   const [slipPreview, setSlipPreview] = useState(null);
 
+  // ป้องกันการกดยืนยันชำระเงินซ้ำหลายครั้งระหว่างรอผลลัพธ์
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // เก็บรายการสินค้าที่สต็อกจริงเหลือไม่พอ (เช็คก่อนให้แนบสลิป/จ่ายเงิน)
+  const [stockIssues, setStockIssues] = useState([]);
+  const [checkingStock, setCheckingStock] = useState(true);
+
   // State สำหรับควบคุมการเปิด/ปิด Popup คำเตือน 3 เดือน
   const [showWarningModal, setShowWarningModal] = useState(false);
 
@@ -42,6 +49,48 @@ export default function Cart() {
     };
     fetchPaymentInfo();
   }, []);
+
+  // เช็คสต็อกจริงตอนนี้เทียบกับจำนวนในตะกร้า ก่อนให้ลูกค้าแนบสลิป/โอนเงิน
+  // เพื่อไม่ให้ลูกค้าโอนเงินไปแล้วค่อยมารู้ทีหลังว่าของหมด
+  useEffect(() => {
+    const checkStock = async () => {
+      if (cart.length === 0) {
+        setCheckingStock(false);
+        return;
+      }
+      setCheckingStock(true);
+      try {
+        const res = await API.get('/products');
+        const productsById = {};
+        res.data.forEach((p) => { productsById[p.id] = p; });
+
+        const issues = [];
+        cart.forEach((item) => {
+          const current = productsById[item.id];
+          if (!current) {
+            issues.push({ name: item.name, requested: item.quantity, available: 0, size: item.selectedSize });
+            return;
+          }
+          let available;
+          if (item.selectedSize && current.sizes) {
+            const sizesObj = typeof current.sizes === 'string' ? JSON.parse(current.sizes) : current.sizes;
+            available = Number(sizesObj[item.selectedSize]) || 0;
+          } else {
+            available = Number(current.stock) || 0;
+          }
+          if (item.quantity > available) {
+            issues.push({ name: item.name, requested: item.quantity, available, size: item.selectedSize });
+          }
+        });
+        setStockIssues(issues);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setCheckingStock(false);
+      }
+    };
+    checkStock();
+  }, [cart]);
 
   // ฟังก์ชันช่วยจัดการ URL ของรูปภาพ
   const getImageUrl = (imagePath) => {
@@ -83,6 +132,8 @@ export default function Cart() {
 
   // ฟังก์ชันส่งคำสั่งซื้อ
   const executeCheckout = async () => {
+    if (isSubmitting) return; // กันกดซ้ำระหว่างรอผลลัพธ์
+    setIsSubmitting(true);
     try {
       const formData = new FormData();
       formData.append('items', JSON.stringify(cart));
@@ -108,12 +159,19 @@ export default function Cart() {
 
     } catch (err) {
       toast.error(err.response?.data?.message || 'เกิดข้อผิดพลาดในการสั่งซื้อ');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   // ฟังก์ชันกดปุ่มชำระเงิน
   const handleCheckoutClick = () => {
     if (cart.length === 0) return;
+
+    if (stockIssues.length > 0) {
+      toast.error('มีสินค้าในตะกร้าที่สต็อกไม่พอ กรุณาปรับจำนวนก่อนชำระเงิน');
+      return;
+    }
 
     if (!slipFile) {
       toast.error('กรุณาแนบหลักฐานการโอนเงิน (สลิป) ก่อนยืนยันการสั่งซื้อ');
@@ -323,6 +381,25 @@ export default function Cart() {
           boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
           border: '1px solid #f1f5f9'
         }}>
+          {stockIssues.length > 0 && (
+            <div style={{
+              background: '#fef2f2',
+              border: '1px solid #fecaca',
+              borderRadius: '12px',
+              padding: '16px',
+              marginBottom: '20px'
+            }}>
+              <p style={{ margin: '0 0 8px 0', color: '#dc2626', fontWeight: '700', fontSize: '15px' }}>
+                ⚠️ สินค้าบางรายการในตะกร้าเหลือไม่พอ กรุณาปรับจำนวนก่อนโอนเงิน
+              </p>
+              {stockIssues.map((issue, idx) => (
+                <p key={idx} style={{ margin: '4px 0 0 0', color: '#991b1b', fontSize: '14px' }}>
+                  • {issue.name}{issue.size ? ` (ไซส์ ${issue.size})` : ''}: สั่ง {issue.requested} ชิ้น แต่เหลือ {issue.available} ชิ้น
+                </p>
+              ))}
+            </div>
+          )}
+
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', borderBottom: '2px dashed #f1f5f9', paddingBottom: '20px' }}>
             <span style={{ fontSize: '18px', color: '#475569', fontWeight: '500' }}>ยอดรวมทั้งหมดที่ต้องชำระ</span>
             <span style={{ fontSize: '32px', color: '#16a34a', fontWeight: '800' }}>
@@ -400,21 +477,28 @@ export default function Cart() {
             </button>
             <button
               onClick={handleCheckoutClick}
+              disabled={checkingStock || stockIssues.length > 0 || isSubmitting}
               style={{
                 flex: '2',
                 minWidth: '200px',
                 padding: '14px',
-                background: '#16a34a',
+                background: (checkingStock || stockIssues.length > 0 || isSubmitting) ? '#94a3b8' : '#16a34a',
                 color: '#ffffff',
                 border: 'none',
                 borderRadius: '10px',
+                cursor: (checkingStock || stockIssues.length > 0 || isSubmitting) ? 'not-allowed' : 'pointer',
                 fontSize: '16px',
                 fontWeight: '700',
-                cursor: 'pointer',
                 boxShadow: '0 4px 12px rgba(22,163,74,0.25)'
               }}
             >
-              ยืนยันการชำระเงินและสั่งซื้อ
+              {isSubmitting
+                ? 'กำลังส่งคำสั่งซื้อ...'
+                : checkingStock
+                  ? 'กำลังตรวจสอบสต็อก...'
+                  : stockIssues.length > 0
+                    ? 'สต็อกไม่พอ กรุณาปรับจำนวน'
+                    : 'ยืนยันการชำระเงินและสั่งซื้อ'}
             </button>
           </div>
         </div>
@@ -475,10 +559,11 @@ export default function Cart() {
                   setShowWarningModal(false);
                   executeCheckout();
                 }}
+                disabled={isSubmitting}
                 style={{
                   flex: '1',
                   padding: '12px',
-                  background: '#16a34a',
+                  background: isSubmitting ? '#94a3b8' : '#16a34a',
                   color: '#ffffff',
                   border: 'none',
                   borderRadius: '10px',
