@@ -28,13 +28,13 @@ html, body {
   justify-content: space-between;
   align-items: center;
   padding: 16px 36px;
-  background: #090d16 !important; /* ดำเข้มมีมิติระดับพรีเมียม */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(120deg, #071a30 0%, #0b3d63 45%, #1568a3 100%) !important; /* โทนน้ำเงิน-ท้องทะเลตามโลโก้ */
+  border-bottom: 1px solid rgba(125, 211, 252, 0.25);
   color: #ffffff;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35); /* เพิ่มเงาลอยมีมิติ */
+  box-shadow: 0 10px 30px rgba(6, 40, 68, 0.4);
 }
 
 /* ส่วนแสดงโลโก้คู่กับชื่อแบรนด์ */
@@ -50,7 +50,7 @@ html, body {
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 0 15px rgba(37, 99, 235, 0.6); /* แสงนีออนรอบโลโก้มีมิติ */
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.65); /* แสงฟ้าอ่อนรอบโลโก้ตามโทนโลโก้จริง */
   transition: transform 0.3s ease;
 }
 
@@ -151,8 +151,8 @@ html, body {
   text-decoration: none;
   padding: 8px 18px;
   border-radius: 50px !important;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  background: rgba(125, 211, 252, 0.08);
+  border: 1px solid rgba(125, 211, 252, 0.35) !important;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -161,8 +161,8 @@ html, body {
 
 .nav-link:hover {
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.15) !important;
-  border-color: #ffffff !important;
+  background: rgba(125, 211, 252, 0.22) !important;
+  border-color: #7dd3fc !important;
   transform: translateY(-1px);
 }
 
@@ -172,8 +172,8 @@ html, body {
   font-size: 14px;
   padding: 8px 18px;
   border-radius: 50px !important;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  background: rgba(125, 211, 252, 0.08);
+  border: 1px solid rgba(125, 211, 252, 0.35) !important;
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -182,19 +182,19 @@ html, body {
 }
 
 .nav-link-cart:hover {
-  background: rgba(255, 255, 255, 0.15) !important;
-  border-color: #ffffff !important;
+  background: rgba(125, 211, 252, 0.22) !important;
+  border-color: #7dd3fc !important;
   transform: translateY(-1px);
 }
 
 .nav-link-register {
-  color: #34d399 !important;
+  color: #7dd3fc !important;
   font-weight: 600;
   font-size: 14px;
   padding: 8px 18px;
   border-radius: 50px !important;
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.45) !important;
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -230,8 +230,8 @@ html, body {
 }
 
 .admin-dropdown-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  background: rgba(125, 211, 252, 0.08);
+  border: 1px solid rgba(125, 211, 252, 0.35) !important;
   color: #ffffff !important;
   font-weight: 500;
   font-size: 14px;
@@ -246,8 +246,8 @@ html, body {
 }
 
 .admin-dropdown-btn:hover {
-  background: rgba(255, 255, 255, 0.15) !important;
-  border-color: #ffffff !important;
+  background: rgba(125, 211, 252, 0.22) !important;
+  border-color: #7dd3fc !important;
   transform: translateY(-1px);
 }
 
@@ -266,10 +266,10 @@ html, body {
   top: calc(100% + 10px);
   right: 0;
   width: 190px;
-  background: #18181b !important;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #0b2f4f !important; /* น้ำเงินเข้มเข้าธีมแทนสีดำเดิม */
+  border: 1px solid rgba(125, 211, 252, 0.25);
   border-radius: 16px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 15px 35px rgba(6, 40, 68, 0.45);
   padding: 8px;
   z-index: 1000;
   display: flex;
@@ -292,7 +292,7 @@ html, body {
 
 .admin-dropdown-item:hover {
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(125, 211, 252, 0.18);
   transform: translateX(4px);
 }
 
