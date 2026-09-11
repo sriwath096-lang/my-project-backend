@@ -403,9 +403,16 @@ app.delete('/api/products/:id', authenticateToken, isAdmin, async (req, res) => 
 // ==========================================
 
 app.post('/api/orders', authenticateToken, upload.single('slip_image'), async (req, res) => {
+  let items, total_price;
   try {
-    const items = JSON.parse(req.body.items);
-    const total_price = req.body.total_price;
+    items = JSON.parse(req.body.items);
+    total_price = req.body.total_price;
+  } catch (parseErr) {
+    console.error('Order Parse Error - req.body.items:', req.body.items);
+    return res.status(400).json({ message: 'รูปแบบข้อมูลสินค้าไม่ถูกต้อง กรุณาลองสั่งซื้อใหม่อีกครั้ง' });
+  }
+
+  try {
     const userId = req.user.id;
 
     if (!items || items.length === 0) {
@@ -485,7 +492,8 @@ app.post('/api/orders', authenticateToken, upload.single('slip_image'), async (r
       if (connection) connection.release();
     }
   } catch (err) {
-    res.status(400).json({ message: 'รูปแบบข้อมูลไม่ถูกต้อง' });
+    console.error('Order Creation Unexpected Error:', err);
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดที่ไม่คาดคิด กรุณาลองใหม่อีกครั้ง' });
   }
 });
 
