@@ -126,13 +126,16 @@ export default function ProductList() {
       {/* ส่วนค้นหา */}
       <div className="product-header-toolbar">
         <h2 className="product-list-title">รายการสินค้าทั้งหมด</h2>
-        <input
-          type="text"
-          placeholder="🔍 ค้นหาสินค้า..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="product-search-input"
-        />
+        <div className="search-input-wrapper">
+          <span className="search-input-icon">🔍</span>
+          <input
+            type="text"
+            placeholder="ค้นหาสินค้า..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="product-search-input"
+          />
+        </div>
       </div>
 
       {/* โครงสร้างหมวดหมู่ และ การ์ดสินค้า */}
@@ -199,7 +202,7 @@ export default function ProductList() {
             <div className="product-empty-text">ไม่พบสินค้าที่ตรงกับการค้นหา หรือในหมวดหมู่นี้</div>
           ) : (
             <div className="product-grid">
-              {filteredProducts.map((p) => {
+              {filteredProducts.map((p, index) => {
                 const catObj = categories.find(c => String(c.id) === String(p.category_id));
                 const categoryName = catObj ? catObj.name : (p.category || 'ไม่ระบุหมวดหมู่');
 
@@ -208,14 +211,17 @@ export default function ProductList() {
                     key={p.id} 
                     className="product-card product-card-clickable"
                     onClick={() => handleOpenModal(p)}
+                    style={{ animationDelay: `${(index % 12) * 0.04}s` }}
                   >
                     <div>
-                      <img
-                        src={getProductImgUrl(p.image_url)}
-                        alt={p.name}
-                        className="product-image"
-                      />
-                      <span style={{ display: 'inline-block', fontSize: '11px', background: '#f1f5f9', color: '#475569', padding: '3px 10px', borderRadius: '6px', marginTop: '8px', fontWeight: '600' }}>
+                      <div className="product-image-wrap">
+                        <img
+                          src={getProductImgUrl(p.image_url)}
+                          alt={p.name}
+                          className="product-image"
+                        />
+                      </div>
+                      <span style={{ display: 'inline-block', fontSize: '11px', background: '#e0f2fe', color: '#0369a1', padding: '3px 10px', borderRadius: '6px', marginTop: '8px', fontWeight: '600' }}>
                         {categoryName}
                       </span>
                       <h3 className="product-name">{p.name}</h3>
