@@ -126,16 +126,13 @@ export default function ProductList() {
       {/* ส่วนค้นหา */}
       <div className="product-header-toolbar">
         <h2 className="product-list-title">รายการสินค้าทั้งหมด</h2>
-        <div className="search-input-wrapper">
-          <span className="search-input-icon">🔍</span>
-          <input
-            type="text"
-            placeholder="ค้นหาสินค้า..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="product-search-input"
-          />
-        </div>
+        <input
+          type="text"
+          placeholder="ค้นหาสินค้า..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="product-search-input"
+        />
       </div>
 
       {/* โครงสร้างหมวดหมู่ และ การ์ดสินค้า */}
