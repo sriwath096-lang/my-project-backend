@@ -372,7 +372,10 @@ export default function ProductList() {
                 onClick={(e) => handleAddToCart(selectedProduct, e)}
                 style={{
                   flex: 1,
-                  display: 'block',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '50px',
                   padding: '14px 16px',
                   background: selectedProduct.stock > 0 ? '#0f172a' : '#cbd5e1',
                   color: '#ffffff',
@@ -386,7 +389,7 @@ export default function ProductList() {
                   boxSizing: 'border-box'
                 }}
               >
-                {selectedProduct.stock > 0 ? `🛒 ใส่ตะกร้า (${buyQuantity} ชิ้น)` : '❌ สินค้าหมด'}
+                {selectedProduct.stock > 0 ? '🛒 ใส่ตะกร้า' : '❌ สินค้าหมด'}
               </button>
 
               <button
@@ -394,7 +397,10 @@ export default function ProductList() {
                 onClick={() => setSelectedProduct(null)}
                 style={{
                   flex: 1,
-                  display: 'block',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '50px',
                   padding: '14px 16px',
                   background: '#f1f5f9',
                   color: '#334155',
