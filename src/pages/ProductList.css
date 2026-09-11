@@ -233,6 +233,8 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
+  height: 100vh;
+  height: 100dvh; /* กันปัญหาแถบ URL มือถือเลื่อนขึ้นลงแล้ว popup เพี้ยน */
   background: rgba(15, 23, 42, 0.5);
   backdrop-filter: blur(6px);
   display: flex;
@@ -240,6 +242,7 @@
   justify-content: center;
   z-index: 1000;
   padding: 20px;
+  box-sizing: border-box;
 }
 
 .modal-content {
@@ -250,6 +253,7 @@
   max-width: 600px;
   box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
   max-height: 90vh;
+  max-height: 85dvh; /* ใช้ dynamic viewport height กันเนื้อหาโดนแถบ URL มือถือบัง */
   overflow-y: auto;
   box-sizing: border-box;
   border: 1px solid #e2e8f0;
