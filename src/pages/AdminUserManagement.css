@@ -103,11 +103,11 @@
 }
 
 .btn-edit {
-  background: #ffffff !important;
-  color: #0f172a !important;
-  border: 1px solid #cbd5e1 !important;
-  padding: 8px 14px !important;
-  border-radius: 8px !important;
+  background: #2563eb !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 8px 16px !important;
+  border-radius: 999px !important;
   cursor: pointer !important;
   font-weight: 700 !important;
   font-size: 13px !important;
@@ -116,16 +116,16 @@
 }
 
 .btn-edit:hover {
-  background: #f1f5f9 !important;
-  border-color: #94a3b8 !important;
+  background: #1d4ed8 !important;
+  transform: translateY(-1px);
 }
 
 .btn-delete {
-  background: #ffffff !important;
-  color: #991b1b !important;
-  border: 1px solid #fecaca !important;
-  padding: 8px 14px !important;
-  border-radius: 8px !important;
+  background: #ef4444 !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 8px 16px !important;
+  border-radius: 999px !important;
   cursor: pointer !important;
   font-weight: 700 !important;
   font-size: 13px !important;
@@ -134,8 +134,8 @@
 }
 
 .btn-delete:hover {
-  background: #fef2f2 !important;
-  border-color: #fca5a5 !important;
+  background: #dc2626 !important;
+  transform: translateY(-1px);
 }
 
 /* Modal ป๊อบอัพ */

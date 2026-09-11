@@ -398,36 +398,38 @@
    10. ปุ่มจัดการในตาราง (Edit & Delete Buttons)
    ========================================== */
 .btn-edit {
-  background: var(--warning-bg);
-  color: var(--warning-fg);
-  border: 1px solid #fde68a;
-  padding: 6px 13px;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 7px 16px;
   border-radius: var(--radius-pill);
   cursor: pointer;
   font-weight: 600;
   font-size: 12.5px;
   margin-right: 6px;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, transform 0.15s ease;
 }
 
 .btn-edit:hover {
-  background: #fef0c7;
+  background: #1d4ed8;
+  transform: translateY(-1px);
 }
 
 .btn-delete {
-  background: var(--danger-bg);
-  color: var(--danger-fg);
-  border: 1px solid #fecaca;
-  padding: 6px 13px;
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+  padding: 7px 16px;
   border-radius: var(--radius-pill);
   cursor: pointer;
   font-weight: 600;
   font-size: 12.5px;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, transform 0.15s ease;
 }
 
 .btn-delete:hover {
-  background: #fee2e2;
+  background: #dc2626;
+  transform: translateY(-1px);
 }
 
 /* ==========================================
