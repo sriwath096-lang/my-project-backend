@@ -88,11 +88,11 @@
 }
 
 .category-item:hover {
-  background: #f1f5f9;
+  background: #e0f2fe;
 }
 
 .category-item.active {
-  background: #0f172a !important;
+  background: #1568a3 !important;
   color: #ffffff !important;
   font-weight: 600;
 }
