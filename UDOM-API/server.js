@@ -634,6 +634,101 @@ app.delete('/api/admin/orders/:id', authenticateToken, isAdmin, async (req, res)
 });
 
 // ==========================================
+// 5.5. Support Chat APIs (แชทติดต่อแอดมิน)
+// ==========================================
+
+// ผู้ใช้: ดึงข้อความสนทนาของตัวเอง
+app.get('/api/support/messages', authenticateToken, async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      'SELECT id, user_id, sender_role, message, created_at FROM support_messages WHERE user_id = ? ORDER BY created_at ASC',
+      [req.user.id]
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error('Fetch Support Messages Error:', err);
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการดึงข้อความ' });
+  }
+});
+
+// ผู้ใช้: ส่งข้อความหาแอดมิน
+app.post('/api/support/messages', authenticateToken, async (req, res) => {
+  const { message } = req.body;
+  if (!message || !message.trim()) {
+    return res.status(400).json({ message: 'กรุณาพิมพ์ข้อความ' });
+  }
+  try {
+    await db.query(
+      'INSERT INTO support_messages (user_id, sender_role, message) VALUES (?, ?, ?)',
+      [req.user.id, 'user', message.trim()]
+    );
+    res.status(201).json({ message: 'ส่งข้อความสำเร็จ' });
+  } catch (err) {
+    console.error('Send Support Message Error:', err);
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการส่งข้อความ' });
+  }
+});
+
+// แอดมิน: ดึงรายชื่อผู้ใช้ทั้งหมดที่เคยส่งข้อความมา พร้อมข้อความล่าสุด
+app.get('/api/admin/support/threads', authenticateToken, isAdmin, async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT 
+        u.id AS user_id,
+        u.first_name,
+        u.last_name,
+        u.email,
+        m.message AS last_message,
+        m.created_at AS last_message_at
+      FROM users u
+      INNER JOIN (
+        SELECT user_id, MAX(id) AS max_id
+        FROM support_messages
+        GROUP BY user_id
+      ) latest ON latest.user_id = u.id
+      INNER JOIN support_messages m ON m.id = latest.max_id
+      ORDER BY m.created_at DESC
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error('Fetch Support Threads Error:', err);
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการดึงรายการข้อความ' });
+  }
+});
+
+// แอดมิน: ดึงบทสนทนาทั้งหมดกับผู้ใช้รายหนึ่ง
+app.get('/api/admin/support/messages/:userId', authenticateToken, isAdmin, async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      'SELECT id, user_id, sender_role, message, created_at FROM support_messages WHERE user_id = ? ORDER BY created_at ASC',
+      [req.params.userId]
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error('Fetch Support Conversation Error:', err);
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการดึงบทสนทนา' });
+  }
+});
+
+// แอดมิน: ตอบกลับผู้ใช้รายหนึ่ง
+app.post('/api/admin/support/messages/:userId', authenticateToken, isAdmin, async (req, res) => {
+  const { message } = req.body;
+  if (!message || !message.trim()) {
+    return res.status(400).json({ message: 'กรุณาพิมพ์ข้อความ' });
+  }
+  try {
+    await db.query(
+      'INSERT INTO support_messages (user_id, sender_role, message) VALUES (?, ?, ?)',
+      [req.params.userId, 'admin', message.trim()]
+    );
+    res.status(201).json({ message: 'ส่งข้อความสำเร็จ' });
+  } catch (err) {
+    console.error('Admin Reply Error:', err);
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการส่งข้อความ' });
+  }
+});
+
+// ==========================================
 // 6. Start Server
 // ==========================================
 const PORT = process.env.PORT || 5000;
