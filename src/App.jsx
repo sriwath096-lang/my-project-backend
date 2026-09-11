@@ -13,6 +13,8 @@ import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminUserManagement from './pages/AdminUserManagement';
 import AdminOrders from './pages/AdminOrders';
+import ContactAdmin from './pages/ContactAdmin';
+import AdminSupport from './pages/AdminSupport';
 import ProductList from './pages/ProductList';
 import Cart from './pages/Cart';
 import OrderSuccess from './pages/OrderSuccess';
@@ -342,6 +344,10 @@ function Navbar() {
               📋 ประวัติสั่งซื้อ
             </Link>
 
+            <Link to="/contact-admin" className="nav-link">
+              💬 ติดต่อแอดมิน
+            </Link>
+
             <Link to="/profile" className="nav-link">
               👤 โปรไฟล์ ({user.first_name})
             </Link>
@@ -370,6 +376,9 @@ function Navbar() {
                     </Link>
                     <Link to="/admin/payment-settings" onClick={() => setIsAdminDropdownOpen(false)} className="admin-dropdown-item">
                       <span>💳</span> ตั้งค่าชำระเงิน
+                    </Link>
+                    <Link to="/admin/support" onClick={() => setIsAdminDropdownOpen(false)} className="admin-dropdown-item">
+                      <span>💬</span> ข้อความติดต่อ
                     </Link>
                   </div>
                 )}
@@ -482,6 +491,7 @@ export default function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/my-orders" element={<MyOrders />} />
                 <Route path="/order-success/:id" element={<OrderSuccess />} />
+                <Route path="/contact-admin" element={<ContactAdmin />} />
               </Route>
 
               <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
@@ -489,6 +499,7 @@ export default function App() {
                 <Route path="/admin/users" element={<AdminUserManagement />} />
                 <Route path="/admin/orders" element={<AdminOrders />} />
                 <Route path="/admin/payment-settings" element={<PaymentSettings />} />
+                <Route path="/admin/support" element={<AdminSupport />} />
               </Route>
             </Routes>
           </div>
